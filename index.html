@@ -64,18 +64,18 @@ body{font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;background:#f0
 .key-warn{background:#fef2f2;border:1px solid #fca5a5;border-radius:8px;padding:10px 14px;margin-bottom:14px;font-size:13px;color:#991b1b;display:none}
 .key-warn ul{margin-top:4px;padding-left:16px}
 /* Table */
-.eval-table{width:100%;border-collapse:collapse;margin-bottom:4px;font-size:13px}
+.eval-table{width:100%;border-collapse:collapse;margin-bottom:4px;font-size:13px;table-layout:fixed}
 .eval-table th{background:#f1f5f9;padding:9px 8px;text-align:center;font-weight:600;border:1px solid #e2e8f0;color:#374151;font-size:12px}
 .eval-table td{border:1px solid #e2e8f0;padding:7px 8px;vertical-align:middle}
 .cat-row td{background:#1e3a5f;color:white;font-weight:bold;padding:9px 12px;font-size:13px}
 .item-row:nth-child(even){background:#f9fafb}
 .item-row:hover{background:#eff6ff}
-.item-name{white-space:nowrap;line-height:1.4}
+.item-name{white-space:normal;word-break:keep-all;line-height:1.5}
 .key-item{font-weight:600;color:#991b1b}
 .key-star{background:#fef2f2;color:#991b1b;border:1px solid #fca5a5;border-radius:3px;padding:1px 4px;font-size:10px;margin-left:4px;font-weight:bold}
 /* Score buttons */
 .score-btns{display:flex;gap:3px;justify-content:center}
-.s-btn{border:2px solid #e5e7eb;background:white;border-radius:6px;padding:5px 10px;cursor:pointer;font-family:inherit;font-size:12px;transition:all .15s;min-width:48px;text-align:center}
+.s-btn{border:2px solid #e5e7eb;background:white;border-radius:6px;padding:5px 8px;cursor:pointer;font-family:inherit;font-size:12px;transition:all .15s;width:100%;text-align:center}
 .s-btn:hover{transform:translateY(-1px)}
 .s-btn .s-label{font-weight:bold;display:block}
 .s-btn .s-pts{font-size:10px;color:#9ca3af;display:block}
@@ -86,10 +86,10 @@ body{font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;background:#f0
 .s-btn.selected-하{background:#fee2e2;border-color:#dc2626;color:#b91c1c}
 .s-btn.selected-하 .s-pts{color:#b91c1c}
 /* Points display */
-.pts-cell{text-align:center;font-weight:bold;font-size:15px;color:#1d4ed8;min-width:44px}
-.pts-cell.empty{color:#d1d5db;font-weight:normal;font-size:13px}
+.pts-cell{text-align:center;font-weight:bold;font-size:14px;color:#1d4ed8}
+.pts-cell.empty{color:#d1d5db;font-weight:normal;font-size:12px}
 /* Comment */
-.comment-cell textarea{width:100%;border:1px solid #e5e7eb;border-radius:4px;padding:4px 6px;font-size:11px;font-family:inherit;resize:none;min-height:32px;line-height:1.4;color:#374151}
+.comment-cell textarea{width:100%;border:1px solid #e5e7eb;border-radius:4px;padding:3px 5px;font-size:11px;font-family:inherit;resize:none;min-height:28px;line-height:1.4;color:#374151}
 .comment-cell textarea:focus{outline:none;border-color:#93c5fd}
 .comment-cell textarea.show-warn{border-color:#f87171;background:#fff5f5}
 /* Category subtotal row */
@@ -110,12 +110,26 @@ body{font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;background:#f0
 .pts-hidden .pts-cell:not(:empty){visibility:hidden}
 /* Responsive */
 @media(max-width:640px){
+  .container{padding:8px}
+  .card{padding:12px}
+  .header h1{font-size:16px}
   .info-grid-top{grid-template-columns:1fr 1fr}
   .evaluator-grid{flex-wrap:wrap}
-  .evaluator-field,.sign-field{flex:1;min-width:120px}
-  .header h1{font-size:17px}
-  .eval-table th:last-child,.eval-table td:last-child{display:none}
-  .s-btn{min-width:40px;padding:4px 6px}
+  .evaluator-field,.sign-field{flex:1;min-width:100px}
+  /* 테이블 폰트 작게 */
+  .eval-table{font-size:11px}
+  .eval-table th{font-size:10px;padding:6px 4px}
+  .eval-table td{padding:5px 4px}
+  .cat-row td{font-size:11px;padding:7px 8px}
+  /* 행동지표: 줄바꿈 허용 */
+  .item-name{font-size:11px;word-break:keep-all;line-height:1.45}
+  /* 상/중/하 버튼 */
+  .s-btn{padding:4px 3px;font-size:11px;border-width:1px}
+  .s-btn .s-pts{font-size:9px}
+  /* 득점 */
+  .pts-cell{font-size:12px}
+  /* 관찰기록 작게 */
+  .comment-cell textarea{font-size:10px;min-height:24px;padding:2px 4px}
 }
 /* Print */
 @media print{
@@ -348,10 +362,10 @@ function buildForm(d) {
 
   html += `<table class="eval-table" id="${d.id}-table">
   <colgroup>
-    <col style="width:1px">
-    <col style="width:180px">
-    <col style="width:48px">
-    <col>
+    <col style="width:auto">
+    <col style="width:162px">
+    <col style="width:40px">
+    <col style="width:90px">
   </colgroup>
   <thead>
     <tr>
