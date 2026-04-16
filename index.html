@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>현장지휘관 자격인증 실기평가표</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;background:#f0f4f8;color:#1a1a1a;font-size:14px}
+/* Header */
+.header{background:linear-gradient(135deg,#1e3a5f,#2563eb);color:white;padding:18px 20px;text-align:center}
+.header h1{font-size:20px;font-weight:bold;letter-spacing:-0.3px}
+.header p{font-size:12px;margin-top:4px;opacity:.85}
+.container{max-width:980px;margin:0 auto;padding:16px}
+/* Tabs */
+.tabs{display:flex;gap:4px;margin-bottom:0}
+.tab-btn{flex:1;padding:11px 8px;border:none;cursor:pointer;font-size:14px;font-weight:bold;border-radius:8px 8px 0 0;transition:all .2s;font-family:inherit}
+.tab-btn.t1{background:#dbeafe;color:#1e40af}
+.tab-btn.t2{background:#d1fae5;color:#065f46}
+.tab-btn.t3{background:#fce7f3;color:#9d174d}
+.tab-btn.t1.active{background:#1e40af;color:white}
+.tab-btn.t2.active{background:#065f46;color:white}
+.tab-btn.t3.active{background:#9d174d;color:white}
+/* Card */
+.card{background:white;border-radius:0 8px 8px 8px;box-shadow:0 2px 10px rgba(0,0,0,.1);padding:20px}
+.tab-pane{display:none}.tab-pane.active{display:block}
+/* Info grid */
+.info-section{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px;margin-bottom:18px}
+.info-title{font-size:12px;font-weight:bold;color:#64748b;margin-bottom:10px;text-transform:uppercase;letter-spacing:.5px}
+.info-grid{display:grid;gap:10px}
+.info-grid-top{grid-template-columns:1fr 1fr}
+.info-field label{display:block;font-size:11px;color:#6b7280;margin-bottom:3px}
+.info-field input{width:100%;padding:7px 10px;border:1px solid #d1d5db;border-radius:6px;font-size:13px;font-family:inherit}
+.info-field input:focus{outline:none;border-color:#3b82f6;box-shadow:0 0 0 2px rgba(59,130,246,.15)}
+/* Evaluator section */
+.evaluator-section{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px;margin-top:16px}
+.evaluator-title{font-size:12px;font-weight:bold;color:#64748b;margin-bottom:10px;text-transform:uppercase;letter-spacing:.5px}
+.evaluator-grid{display:flex;gap:12px;align-items:end}
+.evaluator-field{flex:1}
+.evaluator-field label{display:block;font-size:11px;color:#6b7280;margin-bottom:3px}
+.evaluator-field input{width:100%;padding:7px 10px;border:1px solid #d1d5db;border-radius:6px;font-size:13px;font-family:inherit;height:35px}
+.evaluator-field input:focus{outline:none;border-color:#3b82f6;box-shadow:0 0 0 2px rgba(59,130,246,.15)}
+.sign-field{flex:1}
+.sign-field label{display:block;font-size:11px;color:#6b7280;margin-bottom:3px}
+.sign-box{height:35px;border:1px solid #d1d5db;border-radius:6px;background:white}
+/* Score summary */
+.score-bar{border-radius:10px;padding:16px 20px;margin-bottom:16px;color:white}
+.sb-basic{background:linear-gradient(135deg,#1e40af,#3b82f6)}
+.sb-inter{background:linear-gradient(135deg,#065f46,#10b981)}
+.sb-adv{background:linear-gradient(135deg,#9d174d,#ec4899)}
+.sb-top{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
+.sb-score{font-size:32px;font-weight:bold}
+.sb-score span{font-size:16px;opacity:.8}
+.sb-right{display:flex;align-items:center;gap:12px}
+.sb-pct{font-size:14px;opacity:.9}
+.badge{padding:6px 18px;border-radius:999px;font-size:15px;font-weight:bold;background:rgba(255,255,255,.15)}
+.badge.pass{background:#16a34a}
+.badge.fail{background:#dc2626}
+.sb-progress{margin-top:10px}
+.sb-bar{height:6px;background:rgba(255,255,255,.3);border-radius:3px;overflow:hidden}
+.sb-fill{height:100%;background:#4ade80;border-radius:3px;transition:width .4s}
+.sb-meta{display:flex;gap:16px;margin-top:8px;font-size:12px;opacity:.85;flex-wrap:wrap}
+/* Key indicator warning */
+.key-warn{background:#fef2f2;border:1px solid #fca5a5;border-radius:8px;padding:10px 14px;margin-bottom:14px;font-size:13px;color:#991b1b;display:none}
+.key-warn ul{margin-top:4px;padding-left:16px}
+/* Table */
+.eval-table{width:100%;border-collapse:collapse;margin-bottom:4px;font-size:13px}
+.eval-table th{background:#f1f5f9;padding:9px 8px;text-align:center;font-weight:600;border:1px solid #e2e8f0;color:#374151;font-size:12px}
+.eval-table td{border:1px solid #e2e8f0;padding:7px 8px;vertical-align:middle}
+.cat-row td{background:#1e3a5f;color:white;font-weight:bold;padding:9px 12px;font-size:13px}
+.item-row:nth-child(even){background:#f9fafb}
+.item-row:hover{background:#eff6ff}
+.item-name{white-space:nowrap;line-height:1.4}
+.key-item{font-weight:600;color:#991b1b}
+.key-star{background:#fef2f2;color:#991b1b;border:1px solid #fca5a5;border-radius:3px;padding:1px 4px;font-size:10px;margin-left:4px;font-weight:bold}
+/* Score buttons */
+.score-btns{display:flex;gap:3px;justify-content:center}
+.s-btn{border:2px solid #e5e7eb;background:white;border-radius:6px;padding:5px 10px;cursor:pointer;font-family:inherit;font-size:12px;transition:all .15s;min-width:48px;text-align:center}
+.s-btn:hover{transform:translateY(-1px)}
+.s-btn .s-label{font-weight:bold;display:block}
+.s-btn .s-pts{font-size:10px;color:#9ca3af;display:block}
+.s-btn.selected-상{background:#dcfce7;border-color:#16a34a;color:#15803d}
+.s-btn.selected-상 .s-pts{color:#15803d}
+.s-btn.selected-중{background:#fef9c3;border-color:#ca8a04;color:#a16207}
+.s-btn.selected-중 .s-pts{color:#a16207}
+.s-btn.selected-하{background:#fee2e2;border-color:#dc2626;color:#b91c1c}
+.s-btn.selected-하 .s-pts{color:#b91c1c}
+/* Points display */
+.pts-cell{text-align:center;font-weight:bold;font-size:15px;color:#1d4ed8;min-width:44px}
+.pts-cell.empty{color:#d1d5db;font-weight:normal;font-size:13px}
+/* Comment */
+.comment-cell textarea{width:100%;border:1px solid #e5e7eb;border-radius:4px;padding:4px 6px;font-size:11px;font-family:inherit;resize:none;min-height:32px;line-height:1.4;color:#374151}
+.comment-cell textarea:focus{outline:none;border-color:#93c5fd}
+.comment-cell textarea.show-warn{border-color:#f87171;background:#fff5f5}
+/* Category subtotal row */
+.subtotal-row td{background:#f8fafc;font-size:12px;color:#475569;text-align:right;padding:6px 10px;border:1px solid #e2e8f0}
+.subtotal-row .st-label{text-align:left;font-weight:500}
+/* Overall comment */
+.overall-section{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px;margin-top:16px}
+.overall-section label{font-weight:bold;font-size:13px;display:block;margin-bottom:6px;color:#374151}
+.overall-section textarea{width:100%;padding:10px;border:1px solid #d1d5db;border-radius:6px;font-size:13px;font-family:inherit;resize:vertical;min-height:80px}
+/* Buttons */
+.btn-row{display:flex;gap:8px;justify-content:flex-end;margin-top:16px;flex-wrap:wrap}
+.btn{padding:9px 20px;border:none;border-radius:7px;cursor:pointer;font-size:13px;font-weight:bold;font-family:inherit;transition:opacity .2s}
+.btn:hover{opacity:.85}
+.btn-reset{background:#f1f5f9;color:#475569;border:1px solid #e2e8f0}
+.btn-hide-pts{background:#fef3c7;color:#92400e;border:1px solid #fcd34d}
+.btn-print{background:#1e3a5f;color:white}
+/* Toggle pts label */
+.pts-hidden .pts-cell:not(:empty){visibility:hidden}
+/* Responsive */
+@media(max-width:640px){
+  .info-grid-top{grid-template-columns:1fr 1fr}
+  .evaluator-grid{flex-wrap:wrap}
+  .evaluator-field,.sign-field{flex:1;min-width:120px}
+  .header h1{font-size:17px}
+  .eval-table th:last-child,.eval-table td:last-child{display:none}
+  .s-btn{min-width:40px;padding:4px 6px}
+}
+/* Print */
+@media print{
+  body{background:white}
+  .tabs,.btn-row,.key-warn{display:none!important}
+  .card{box-shadow:none;padding:10px}
+  .tab-pane{display:none!important}
+  .tab-pane.print-target{display:block!important}
+  .header{background:#1e3a5f!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .score-bar{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .cat-row td{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .s-btn.selected-상,.s-btn.selected-중,.s-btn.selected-하{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>현장지휘관 자격인증 실기평가표</h1>
+  <p>소방청 · 현장지휘관 자격인증제 운영매뉴얼 2025.5.9. 기준</p>
+</div>
+
+<div class="container">
+  <div class="tabs">
+    <button class="tab-btn t1 active" onclick="switchTab('basic',this)">초급 현장지휘관</button>
+    <button class="tab-btn t2" onclick="switchTab('inter',this)">중급 현장지휘관</button>
+    <button class="tab-btn t3" onclick="switchTab('adv',this)">고급 현장지휘관</button>
+  </div>
+  <div class="card" id="mainCard">
+
+    <!-- 초급 -->
+    <div id="tab-basic" class="tab-pane active"></div>
+    <!-- 중급 -->
+    <div id="tab-inter" class="tab-pane"></div>
+    <!-- 고급 -->
+    <div id="tab-adv" class="tab-pane"></div>
+
+  </div>
+</div>
+
+<script>
+const DATA = {
+  basic: {
+    id:'basic', title:'초급현장지휘관 실기평가표', maxScore:100, passScore:80,
+    colorClass:'sb-basic',
+    note:'합격기준 : 100점 만점의 <strong>80점 이상</strong> 득점, 주요행동지표(★) 중 평가관 2인 이상 \'하\' 평정 없음',
+    categories:[
+      {name:'상황평가', items:[
+        {id:'b1', name:'출동중 정보수집 및 임무공유', s:[3,2,1], key:false},
+        {id:'b2', name:'출동중 상황전파', s:[3,2,1], key:false},
+        {id:'b3', name:'최초 상황보고, 지휘형태 결정 및 지휘권선언', s:[10,7,4], key:true},
+        {id:'b4', name:'인명정보 취득 및 전파', s:[5,3,1], key:false},
+        {id:'b5', name:'추가 소방력 판단', s:[3,2,1], key:false},
+      ]},
+      {name:'대응활동', items:[
+        {id:'b6', name:'차량배치', s:[5,3,1], key:false},
+        {id:'b7', name:'표준대응활동', s:[5,3,1], key:false},
+        {id:'b8', name:'후착대 임무부여', s:[3,2,1], key:false},
+        {id:'b9', name:'위기대응 및 진행상황 관리', s:[5,3,1], key:false},
+        {id:'b10', name:'화재현장요소 파악 관리', s:[5,3,1], key:false},
+        {id:'b11', name:'단위지휘관 임무수행', s:[3,2,1], key:false},
+      ]},
+      {name:'화재전술', items:[
+        {id:'b12', name:'소방용수', s:[5,3,1], key:false},
+        {id:'b13', name:'문개방 및 내부진입', s:[5,3,1], key:false},
+        {id:'b14', name:'수관전개 주수 및 관창배치', s:[5,3,1], key:false},
+        {id:'b15', name:'배연', s:[5,3,1], key:false},
+      ]},
+      {name:'의사교환', items:[
+        {id:'b16', name:'무전교신 원칙', s:[5,3,1], key:false},
+        {id:'b17', name:'정보 전달력', s:[5,3,1], key:false},
+        {id:'b18', name:'지휘팀장 도착 후 상황보고', s:[5,3,1], key:false},
+      ]},
+      {name:'핵심목표달성', items:[
+        {id:'b19', name:'인명구조 목표달성의 적절성', s:[10,7,4], key:true},
+        {id:'b20', name:'출동대 안전관리', s:[5,3,1], key:false},
+      ]},
+    ]
+  },
+  inter: {
+    id:'inter', title:'중급현장지휘관 실기평가표', maxScore:200, passScore:160,
+    colorClass:'sb-inter',
+    note:'합격기준 : 200점 만점의 <strong>160점 이상</strong> 득점, 주요행동지표(★) 중 평가관 2인 이상 \'하\' 평정 없음',
+    categories:[
+      {name:'상황평가', items:[
+        {id:'m1', name:'출동중 정보수집', s:[3,2,1], key:false},
+        {id:'m2', name:'선착대장 활동지원', s:[5,3,1], key:false},
+        {id:'m3', name:'지휘권 선언', s:[5,3,1], key:false},
+        {id:'m4', name:'최초 상황평가', s:[10,7,4], key:true},
+        {id:'m5', name:'중요정보 파악', s:[5,3,1], key:false},
+      ]},
+      {name:'지휘의사결정', items:[
+        {id:'m6', name:'선착대 대응활동 유효성 판단', s:[3,2,1], key:false},
+        {id:'m7', name:'현장 위험성 판단', s:[5,3,1], key:false},
+        {id:'m8', name:'핵심목표(대응지침) 제시', s:[5,3,1], key:false},
+        {id:'m9', name:'1차 출동대 임무지시 및 조정', s:[10,7,4], key:true},
+        {id:'m10', name:'추가 자원 요청', s:[5,3,1], key:false},
+      ]},
+      {name:'대응활동', items:[
+        {id:'m11', name:'차량배치 조정', s:[10,7,4], key:true},
+        {id:'m12', name:'소방활동구역 설정 및 통제', s:[5,3,1], key:false},
+        {id:'m13', name:'소방용수공급체계 구축', s:[5,3,1], key:false},
+        {id:'m14', name:'(단계별) 소방력 배치 및 조정', s:[5,3,1], key:false},
+        {id:'m15', name:'현장분할 및 단위지휘관 운영', s:[5,3,1], key:false},
+        {id:'m16', name:'출동대 교대관리', s:[5,3,1], key:false},
+        {id:'m17', name:'대기절차 운영', s:[3,2,1], key:false},
+        {id:'m18', name:'전술상황판 기록', s:[5,3,1], key:false},
+      ]},
+      {name:'진행상황관리', items:[
+        {id:'m19', name:'진행상황 파악', s:[10,7,4], key:true},
+        {id:'m20', name:'상황 미개선 및 악화시 대응조치', s:[5,3,1], key:false},
+        {id:'m21', name:'우선순위보고 조치', s:[5,3,1], key:false},
+        {id:'m22', name:'초진선언', s:[5,3,1], key:false},
+        {id:'m23', name:'전술우선순위 관리', s:[5,3,1], key:false},
+        {id:'m24', name:'완진절차 준수', s:[5,3,1], key:false},
+      ]},
+      {name:'의사교환', items:[
+        {id:'m25', name:'대응초기 무전통제', s:[3,2,1], key:false},
+        {id:'m26', name:'무전망 분리운영', s:[3,2,1], key:false},
+        {id:'m27', name:'무전교신 원칙 준수', s:[5,3,1], key:false},
+        {id:'m28', name:'무전교신 불능 시 조치', s:[5,3,1], key:false},
+        {id:'m29', name:'효율적 의사교환', s:[10,7,4], key:true},
+      ]},
+      {name:'위기관리 및 리더십', items:[
+        {id:'m30', name:'돌발 및 위기상황 대응', s:[5,3,1], key:false},
+        {id:'m31', name:'스트레스 관리', s:[5,3,1], key:false},
+        {id:'m32', name:'리더로서의 능숙한 작전 운영', s:[5,3,1], key:false},
+        {id:'m33', name:'인명구조 목표달성의 적절성', s:[10,7,4], key:true},
+        {id:'m34', name:'출동대 안전관리의 적절성', s:[10,7,4], key:true},
+        {id:'m35', name:'시민보호 및 피해최소화 작전의 적절성', s:[5,3,1], key:false},
+      ]},
+    ]
+  },
+  adv: {
+    id:'adv', title:'고급현장지휘관 실기평가표', maxScore:200, passScore:160,
+    colorClass:'sb-adv',
+    note:'합격기준 : 200점 만점의 <strong>160점 이상</strong> 득점, 주요행동지표(★) 중 평가관 2인 이상 \'하\' 평정 없음',
+    categories:[
+      {name:'상황평가 및 의사결정', items:[
+        {id:'a1', name:'출동중 정보수집 및 선착대장 지원', s:[5,3,1], key:false},
+        {id:'a2', name:'지휘권 선언', s:[5,3,1], key:false},
+        {id:'a3', name:'최초 상황평가', s:[5,3,1], key:false},
+        {id:'a4', name:'핵심목표(대응지침) 제시', s:[5,3,1], key:false},
+        {id:'a5', name:'1차 출동대 임무지시 및 조정', s:[5,3,1], key:false},
+        {id:'a6', name:'유관기관 등 추가자원 동원', s:[5,3,1], key:false},
+      ]},
+      {name:'대응활동 및 진행상황관리', items:[
+        {id:'a7', name:'차량배치 및 조정', s:[3,2,1], key:false},
+        {id:'a8', name:'소방활동구역 설정 및 통제', s:[3,2,1], key:false},
+        {id:'a9', name:'소방용수공급체계 구축', s:[3,2,1], key:false},
+        {id:'a10', name:'소방력 배치 및 조정', s:[5,3,1], key:false},
+        {id:'a11', name:'현장분할 및 단위지휘관 운영', s:[3,2,1], key:false},
+        {id:'a12', name:'진행상황 파악 및 개선조치', s:[10,7,4], key:true},
+        {id:'a13', name:'전술우선순위 관리', s:[5,3,1], key:false},
+        {id:'a14', name:'완진절차 준수', s:[5,3,1], key:false},
+        {id:'a15', name:'전술상황판 기록', s:[3,2,1], key:false},
+      ]},
+      {name:'소통 및 리더십', items:[
+        {id:'a16', name:'무전통제', s:[5,3,1], key:false},
+        {id:'a17', name:'효율적인 의사교환', s:[5,3,1], key:false},
+        {id:'a18', name:'돌발 및 위기상황 대응', s:[5,3,1], key:false},
+        {id:'a19', name:'작전운영의 적절성', s:[5,3,1], key:false},
+        {id:'a20', name:'인명구조 목표달성 및 대원안전관리', s:[10,7,4], key:true},
+      ]},
+      {name:'대응활동계획 및 상황판단회의', items:[
+        {id:'a21', name:'정확한 상황인식', s:[5,3,1], key:false},
+        {id:'a22', name:'목표 및 우선순위 선정의 적절성', s:[5,3,1], key:false},
+        {id:'a23', name:'최종계획의 구체성 및 우수성', s:[5,3,1], key:false},
+        {id:'a24', name:'예비방안(대안) 제시', s:[5,3,1], key:false},
+        {id:'a25', name:'시민생활 영향성 검토 및 반영', s:[5,3,1], key:false},
+        {id:'a26', name:'상황판단회의 진행의 적절성', s:[10,7,4], key:true},
+        {id:'a27', name:'출동대 및 유관기관 간 업무조정', s:[5,3,1], key:false},
+        {id:'a28', name:'명확한 회의 결과 도출 및 지시', s:[5,3,1], key:false},
+        {id:'a29', name:'대응활동계획 조정', s:[5,3,1], key:false},
+      ]},
+      {name:'언론브리핑', items:[
+        {id:'a30', name:'브리핑 준비', s:[5,3,1], key:false},
+        {id:'a31', name:'브리핑 내용의 적절성', s:[10,7,4], key:true},
+        {id:'a32', name:'브리핑 태도', s:[5,3,1], key:false},
+        {id:'a33', name:'전달력', s:[5,3,1], key:false},
+        {id:'a34', name:'질의 응답의 적절성', s:[10,7,4], key:true},
+        {id:'a35', name:'질문의 이해도', s:[5,3,1], key:false},
+        {id:'a36', name:'답변태도', s:[5,3,1], key:false},
+        {id:'a37', name:'언론취재의 방향성 제시', s:[5,3,1], key:false},
+      ]},
+    ]
+  }
+};
+
+// state: {itemId: {rating:'상'|'중'|'하', comment:''}}
+const state = {basic:{}, inter:{}, adv:{}};
+let ptsVisible = {basic:true, inter:true, adv:true};
+let currentTab = 'basic';
+
+function buildForm(d) {
+  const totalItems = d.categories.reduce((a,c)=>a+c.items.length,0);
+  const maxScore = d.maxScore;
+
+  let html = `
+  <div class="info-section">
+    <div class="info-grid info-grid-top">
+      <div class="info-field"><label>응시번호</label><input type="text" id="${d.id}-num" placeholder="응시번호 입력"></div>
+      <div class="info-field"><label>평가일</label><input type="date" id="${d.id}-date" value="${new Date().toISOString().slice(0,10)}"></div>
+    </div>
+  </div>
+
+  <div id="${d.id}-scorebar" class="score-bar ${d.colorClass}">
+    <div class="sb-top">
+      <div>
+        <div style="font-size:12px;opacity:.8;margin-bottom:2px">${d.title}</div>
+        <div class="sb-score" id="${d.id}-total">0<span>/${maxScore}점</span></div>
+      </div>
+      <div class="sb-right">
+        <div class="sb-pct" id="${d.id}-pct">0%</div>
+        <div class="badge" id="${d.id}-badge">미채점</div>
+      </div>
+    </div>
+    <div class="sb-progress">
+      <div class="sb-bar"><div class="sb-fill" id="${d.id}-fill" style="width:0%"></div></div>
+    </div>
+    <div class="sb-meta">
+      <span>합격기준: ${d.passScore}점 이상 (${(d.passScore/d.maxScore*100).toFixed(1)}%)</span>
+      <span id="${d.id}-items-done">채점완료: 0/${totalItems}</span>
+      <span id="${d.id}-key-status">주요지표: 이상없음</span>
+    </div>
+  </div>
+  <div class="key-warn" id="${d.id}-keywarn"></div>
+  <div style="font-size:12px;color:#6b7280;margin-bottom:8px;padding:4px 0;border-bottom:1px solid #e5e7eb;">
+    ※ ★ 주요행동지표 | 합격기준: ${d.note.replace(/<[^>]+>/g,'')}
+  </div>`;
+
+  html += `<table class="eval-table" id="${d.id}-table">
+  <colgroup>
+    <col style="width:1px">
+    <col style="width:180px">
+    <col style="width:48px">
+    <col>
+  </colgroup>
+  <thead>
+    <tr>
+      <th>행 동 지 표</th>
+      <th>평가 (상 / 중 / 하)</th>
+      <th>득점</th>
+      <th>관찰 및 기록</th>
+    </tr>
+  </thead>
+  <tbody>`;
+
+  d.categories.forEach(cat => {
+    const catMax = cat.items.reduce((a,it)=>a+it.s[0],0);
+    html += `<tr class="cat-row"><td colspan="4">${cat.name} <span style="font-size:11px;opacity:.7;font-weight:normal">(배점 ${catMax}점 / ${cat.items.length}개 지표)</span></td></tr>`;
+    cat.items.forEach(item => {
+      html += `
+      <tr class="item-row" id="${d.id}-row-${item.id}">
+        <td class="item-name ${item.key?'key-item':''}">
+          ${item.name}${item.key?'<span class="key-star">★ 주요</span>':''}
+        </td>
+        <td>
+          <div class="score-btns">
+            <button class="s-btn" onclick="setScore('${d.id}','${item.id}','상',${item.s[0]},${item.s[1]},${item.s[2]})">
+              <span class="s-label">상</span><span class="s-pts">${item.s[0]}점</span>
+            </button>
+            <button class="s-btn" onclick="setScore('${d.id}','${item.id}','중',${item.s[0]},${item.s[1]},${item.s[2]})">
+              <span class="s-label">중</span><span class="s-pts">${item.s[1]}점</span>
+            </button>
+            <button class="s-btn" onclick="setScore('${d.id}','${item.id}','하',${item.s[0]},${item.s[1]},${item.s[2]})">
+              <span class="s-label">하</span><span class="s-pts">${item.s[2]}점</span>
+            </button>
+          </div>
+        </td>
+        <td class="pts-cell empty" id="${d.id}-pts-${item.id}">-</td>
+        <td class="comment-cell">
+          <textarea id="${d.id}-cmt-${item.id}" rows="1" placeholder="${item.key?'★ 하 평정 시 반드시 기재':'관찰내용 기록'}"></textarea>
+        </td>
+      </tr>`;
+    });
+  });
+
+  html += `</tbody></table>`;
+
+  html += `
+  <div class="overall-section">
+    <label>종합평가 의견</label>
+    <textarea id="${d.id}-overall" placeholder="전체적으로 잘한 점과 부족한 점 등에 대한 종합적 의견을 기재하세요.&#10;(평가 의견은 개인별 평가 결과 통보 시 주요 의견으로 기재되니, 응시자의 역량 향상에 도움이 될 수 있는 의견을 적극 기재하시기 바랍니다)"></textarea>
+  </div>
+
+  <div class="evaluator-section">
+    <div class="evaluator-title">평가관 정보</div>
+    <div class="evaluator-grid">
+      <div class="evaluator-field">
+        <label>계 급</label>
+        <input type="text" id="${d.id}-eval-rank" placeholder="소방령">
+      </div>
+      <div class="evaluator-field">
+        <label>성 명</label>
+        <input type="text" id="${d.id}-eval-name" placeholder="평가관 성명">
+      </div>
+      <div class="evaluator-field sign-field">
+        <label>서 명</label>
+        <div class="sign-box" id="${d.id}-signbox"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="btn-row">
+    <button class="btn btn-reset" onclick="resetForm('${d.id}')">초기화</button>
+    <button class="btn btn-hide-pts" onclick="togglePts('${d.id}',this)">배점 숨기기</button>
+    <button class="btn btn-print" onclick="printForm('${d.id}')">인쇄 / PDF 저장</button>
+  </div>`;
+
+  return html;
+}
+
+function setScore(tabId, itemId, rating, s0, s1, s2) {
+  const scores = {상:s0, 중:s1, 하:s2};
+  state[tabId][itemId] = state[tabId][itemId] || {};
+  state[tabId][itemId].rating = rating;
+
+  // Update button styles
+  const btns = document.querySelectorAll(`#${tabId}-row-${itemId} .s-btn`);
+  btns.forEach(btn => {
+    btn.classList.remove('selected-상','selected-중','selected-하');
+    const label = btn.querySelector('.s-label').textContent;
+    if(label === rating) btn.classList.add(`selected-${rating}`);
+  });
+
+  // Update points display
+  const ptsEl = document.getElementById(`${tabId}-pts-${itemId}`);
+  ptsEl.textContent = scores[rating];
+  ptsEl.classList.remove('empty');
+
+  // Comment textarea: highlight if 하
+  const cmtEl = document.getElementById(`${tabId}-cmt-${itemId}`);
+  if(rating === '하') cmtEl.classList.add('show-warn');
+  else cmtEl.classList.remove('show-warn');
+
+  updateSummary(tabId);
+}
+
+function updateSummary(tabId) {
+  const d = DATA[tabId];
+  const s = state[tabId];
+  let total = 0, filled = 0;
+  let keyFails = [];
+  let totalItems = 0;
+
+  d.categories.forEach(cat => {
+    cat.items.forEach(item => {
+      totalItems++;
+      if(s[item.id] && s[item.id].rating) {
+        filled++;
+        const rating = s[item.id].rating;
+        const idx = {상:0,중:1,하:2}[rating];
+        total += item.s[idx];
+        if(item.key && rating === '하') keyFails.push(item.name);
+      }
+    });
+  });
+
+  const pct = (total / d.maxScore * 100).toFixed(1);
+  const passPct = (d.passScore / d.maxScore * 100).toFixed(1);
+  const pass = filled === totalItems && total >= d.passScore && keyFails.length === 0;
+  const fail = filled === totalItems && (total < d.passScore || keyFails.length > 0);
+
+  // 점수 표시: 득점 / 만점 (합격기준 N점)
+  document.getElementById(`${tabId}-total`).innerHTML =
+    `${total}<span>/${d.maxScore}점</span>`;
+  // 퍼센트: 소수점 1자리, 합격기준 퍼센트도 함께 표시
+  document.getElementById(`${tabId}-pct`).innerHTML =
+    filled > 0 ? `${pct}% <span style="font-size:11px;opacity:.75">(합격 ${passPct}%)</span>` : '';
+  // 프로그레스 바: 합격기준을 100% 기준으로 표시 (합격 시 100% 초과 → 초록)
+  const fillPct = Math.min((total / d.passScore) * 100, 100);
+  const fillEl = document.getElementById(`${tabId}-fill`);
+  fillEl.style.width = `${fillPct}%`;
+  fillEl.style.background = total >= d.passScore ? '#4ade80' : '#fbbf24';
+  document.getElementById(`${tabId}-items-done`).textContent = `채점완료: ${filled}/${totalItems}`;
+
+  const badge = document.getElementById(`${tabId}-badge`);
+  badge.className = 'badge';
+  if(pass) { badge.textContent=`합격 (${pct}%)`; badge.classList.add('pass'); }
+  else if(fail) { badge.textContent=`불합격 (${pct}%)`; badge.classList.add('fail'); }
+  else { badge.textContent='채점중'; }
+
+  const keyStatus = document.getElementById(`${tabId}-key-status`);
+  const keyWarn = document.getElementById(`${tabId}-keywarn`);
+  if(keyFails.length > 0) {
+    keyStatus.textContent = `⚠ 주요지표 하 평정: ${keyFails.length}개`;
+    keyWarn.style.display = 'block';
+    keyWarn.innerHTML = `<strong>⚠ 주요행동지표(★) 하 평정 항목:</strong><ul>${keyFails.map(n=>`<li>${n}</li>`).join('')}</ul><div style="margin-top:4px;font-size:12px">주요행동지표 '하' 평정은 불합격 사유가 될 수 있습니다.</div>`;
+  } else {
+    keyStatus.textContent = '주요지표: 이상없음';
+    keyWarn.style.display = 'none';
+  }
+}
+
+function resetForm(tabId) {
+  if(!confirm('이 평가표의 모든 내용을 초기화하시겠습니까?')) return;
+  state[tabId] = {};
+  const d = DATA[tabId];
+  d.categories.forEach(cat => {
+    cat.items.forEach(item => {
+      const btns = document.querySelectorAll(`#${tabId}-row-${item.id} .s-btn`);
+      btns.forEach(b => b.classList.remove('selected-상','selected-중','selected-하'));
+      const pts = document.getElementById(`${tabId}-pts-${item.id}`);
+      pts.textContent = '-'; pts.classList.add('empty');
+      const cmt = document.getElementById(`${tabId}-cmt-${item.id}`);
+      cmt.value = ''; cmt.classList.remove('show-warn');
+    });
+  });
+  // Reset info
+  ['num','date','eval-rank','eval-name'].forEach(f => {
+    const el = document.getElementById(`${tabId}-${f}`);
+    if(el) { el.value = f==='date' ? new Date().toISOString().slice(0,10) : ''; }
+  });
+  document.getElementById(`${tabId}-overall`).value = '';
+  updateSummary(tabId);
+}
+
+function togglePts(tabId, btn) {
+  ptsVisible[tabId] = !ptsVisible[tabId];
+  const table = document.getElementById(`${tabId}-table`);
+  if(!ptsVisible[tabId]) {
+    table.querySelectorAll('.s-pts').forEach(el => el.style.display='none');
+    btn.textContent = '배점 보이기';
+  } else {
+    table.querySelectorAll('.s-pts').forEach(el => el.style.display='block');
+    btn.textContent = '배점 숨기기';
+  }
+}
+
+function printForm(tabId) {
+  // Mark current tab as print target
+  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('print-target'));
+  document.getElementById(`tab-${tabId}`).classList.add('print-target');
+  window.print();
+}
+
+function switchTab(tabId, btn) {
+  currentTab = tabId;
+  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(`tab-${tabId}`).classList.add('active');
+  btn.classList.add('active');
+}
+
+// Initialize all forms
+['basic','inter','adv'].forEach(id => {
+  document.getElementById(`tab-${id}`).innerHTML = buildForm(DATA[id]);
+});
+</script>
+</body>
+</html>
