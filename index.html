@@ -73,10 +73,9 @@ body{font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;background:#f0
 .item-name{white-space:nowrap;line-height:1.5}
 .key-item{font-weight:600;color:#991b1b}
 .key-star{background:#fef2f2;color:#991b1b;border:1px solid #fca5a5;border-radius:3px;padding:1px 4px;font-size:10px;margin-left:4px;font-weight:bold}
-/* Score buttons — 상·중 1행 / 하 2행 */
-.score-btns{display:grid;grid-template-columns:1fr 1fr;gap:3px;width:106px}
-.s-btn{border:2px solid #e5e7eb;background:white;border-radius:6px;padding:5px 6px;cursor:pointer;font-family:inherit;font-size:12px;transition:all .15s;text-align:center}
-.s-btn:last-child{grid-column:1/-1}
+/* Score buttons — 상·중·하 한 줄 */
+.score-btns{display:flex;gap:3px;justify-content:center}
+.s-btn{border:2px solid #e5e7eb;background:white;border-radius:6px;padding:5px 6px;cursor:pointer;font-family:inherit;font-size:12px;transition:all .15s;flex:1;text-align:center}
 .s-btn:hover{transform:translateY(-1px)}
 .s-btn .s-label{font-weight:bold;display:block}
 .s-btn .s-pts{font-size:10px;color:#9ca3af;display:block}
@@ -361,7 +360,7 @@ function buildForm(d) {
   html += `<table class="eval-table" id="${d.id}-table">
   <colgroup>
     <col>
-    <col style="width:120px">
+    <col style="width:162px">
     <col style="width:46px">
     <col style="width:99%">
   </colgroup>
