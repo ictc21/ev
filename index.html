@@ -493,8 +493,7 @@ function buildForm(d) {
         </td>
         <td class="pts-cell empty" id="${d.id}-pts-${item.id}">-</td>
         <td class="comment-cell">
-          <textarea id="${d.id}-cmt-${item.id}" rows="1" placeholder="${HINTS[item.id]?HINTS[item.id]+(item.key?'
-★ 하 평정 시 반드시 기재':''):(item.key?'★ 하 평정 시 반드시 기재':'관찰내용 기록')}"></textarea>
+          <textarea id="${d.id}-cmt-${item.id}" rows="1" placeholder="${HINTS[item.id]||(item.key?'★ 하 평정 시 반드시 기재':'관찰내용 기록')}"></textarea>
         </td>
       </tr>`;
     });
