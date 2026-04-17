@@ -28,8 +28,10 @@ body{font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;background:#f0
 .info-section{background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;padding:8px 12px;margin-bottom:10px}
 .info-title{font-size:12px;font-weight:bold;color:#64748b;margin-bottom:10px;text-transform:uppercase;letter-spacing:.5px}
 .info-grid{display:grid;gap:6px}
-.info-grid-top{grid-template-columns:1fr 1fr}
+.info-grid-top{grid-template-columns:1fr 1fr auto;align-items:end;gap:8px}
 .info-field label{display:block;font-size:10px;color:#6b7280;margin-bottom:2px}
+.btn-ai{display:flex;align-items:center;gap:5px;padding:5px 12px;background:linear-gradient(135deg,#7c3aed,#a855f7);color:white;border:none;border-radius:6px;font-size:12px;font-weight:bold;cursor:pointer;font-family:inherit;white-space:nowrap;transition:opacity .2s;height:29px}
+.btn-ai:hover{opacity:.85}
 .info-field input{width:100%;padding:5px 8px;border:1px solid #d1d5db;border-radius:5px;font-size:12px;font-family:inherit}
 .info-field input:focus{outline:none;border-color:#3b82f6;box-shadow:0 0 0 2px rgba(59,130,246,.15)}
 /* Evaluator section */
@@ -428,6 +430,7 @@ function buildForm(d) {
     <div class="info-grid info-grid-top">
       <div class="info-field"><label>응시번호</label><input type="text" id="${d.id}-num" placeholder="응시번호 입력"></div>
       <div class="info-field"><label>평가일</label><input type="date" id="${d.id}-date" value="${new Date().toISOString().slice(0,10)}"></div>
+      <button class="btn-ai" onclick="alert('AI평가관 기능 준비 중입니다.')">🤖 AI평가관</button>
     </div>
   </div>
 
