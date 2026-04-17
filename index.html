@@ -116,7 +116,9 @@ body{font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;background:#f0
   .container{padding:8px}
   .card{padding:12px}
   .header h1{font-size:16px}
-  .info-grid-top{grid-template-columns:1fr 1fr}
+  .info-grid-top{grid-template-columns:1fr 1fr auto;gap:4px}
+  .info-field input{padding:4px 5px;font-size:11px}
+  .btn-ai{font-size:10px;padding:4px 7px;gap:3px;height:27px}
   .evaluator-grid{flex-wrap:wrap}
   .evaluator-field,.sign-field{flex:1;min-width:100px}
   /* 테이블 폰트 작게 */
@@ -133,6 +135,11 @@ body{font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;background:#f0
   .pts-cell{font-size:12px}
   /* 관찰기록 작게 */
   .comment-cell textarea{font-size:10px;height:36px;padding:2px 4px}
+}
+@media(max-width:360px){
+  .info-field input{font-size:10px;padding:3px 4px}
+  .btn-ai{font-size:9px;padding:3px 5px}
+  .btn-ai span{display:none}
 }
 /* Print */
 @media print{.comment-cell textarea::placeholder{color:transparent!important}
