@@ -100,7 +100,8 @@ body{font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;background:#f0
 .overall-section label{font-weight:bold;font-size:13px;display:block;margin-bottom:6px;color:#374151}
 .overall-section textarea{width:100%;padding:10px;border:1px solid #d1d5db;border-radius:6px;font-size:13px;font-family:inherit;resize:vertical;min-height:80px}
 /* Buttons */
-.btn-row{display:flex;gap:8px;justify-content:flex-end;margin-top:16px;flex-wrap:wrap}
+.btn-row{display:flex;gap:8px;justify-content:flex-end;margin-top:16px;flex-wrap:wrap;align-items:center}
+.btn-row-credit{margin-right:auto;font-size:11px;color:#94a3b8;letter-spacing:.3px}
 .btn{padding:9px 20px;border:none;border-radius:7px;cursor:pointer;font-size:13px;font-weight:bold;font-family:inherit;transition:opacity .2s}
 .btn:hover{opacity:.85}
 .btn-reset{background:#f1f5f9;color:#475569;border:1px solid #e2e8f0}
@@ -526,6 +527,7 @@ function buildForm(d) {
   </div>
 
   <div class="btn-row">
+    <span class="btn-row-credit">@ ICTC 서종근</span>
     <button class="btn btn-reset" onclick="resetForm('${d.id}')">초기화</button>
     <button class="btn btn-hide-pts" onclick="togglePts('${d.id}',this)">배점 숨기기</button>
     <button class="btn btn-print" onclick="printForm('${d.id}')">인쇄 / PDF 저장</button>
