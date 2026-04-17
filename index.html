@@ -75,7 +75,7 @@ body{font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;background:#f0
 .key-star{background:#fef2f2;color:#991b1b;border:1px solid #fca5a5;border-radius:3px;padding:1px 4px;font-size:10px;margin-left:4px;font-weight:bold}
 /* Score buttons — 상·중·하 한 줄 */
 .score-btns{display:flex;gap:3px;justify-content:center}
-.s-btn{border:2px solid #e5e7eb;background:white;border-radius:6px;padding:5px 6px;cursor:pointer;font-family:inherit;font-size:12px;transition:all .15s;flex:1;text-align:center}
+.s-btn{border:2px solid #e5e7eb;background:white;border-radius:6px;padding:3px 6px;cursor:pointer;font-family:inherit;font-size:12px;transition:all .15s;flex:1;text-align:center}
 .s-btn:hover{transform:translateY(-1px)}
 .s-btn .s-label{font-weight:bold;display:block}
 .s-btn .s-pts{font-size:10px;color:#9ca3af;display:block;white-space:nowrap}
@@ -89,7 +89,7 @@ body{font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;background:#f0
 .pts-cell{text-align:center;font-weight:bold;font-size:14px;color:#1d4ed8;white-space:nowrap}
 .pts-cell.empty{color:#d1d5db;font-weight:normal;font-size:12px;white-space:nowrap}
 /* Comment */
-.comment-cell textarea{width:100%;border:1px solid #e5e7eb;border-radius:4px;padding:4px 5px;font-size:11px;font-family:inherit;resize:none;height:44px;line-height:1.4;color:#374151;overflow:hidden}
+.comment-cell textarea{width:100%;border:1px solid #e5e7eb;border-radius:4px;padding:3px 5px;font-size:11px;font-family:inherit;resize:none;height:36px;line-height:1.35;color:#374151;overflow:hidden}
 .comment-cell textarea:focus{outline:none;border-color:#93c5fd}
 .comment-cell textarea.show-warn{border-color:#f87171;background:#fff5f5}
 /* Category subtotal row */
@@ -124,12 +124,12 @@ body{font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;background:#f0
   /* 행동지표: 모바일에서 줄바꿈 허용 */
   .item-name{font-size:11px;white-space:normal;word-break:keep-all;line-height:1.45}
   /* 상/중/하 버튼 */
-  .s-btn{padding:4px 3px;font-size:11px;border-width:1px}
+  .s-btn{padding:2px 3px;font-size:11px;border-width:1px}
   .s-btn .s-pts{font-size:9px}
   /* 득점 */
   .pts-cell{font-size:12px}
   /* 관찰기록 작게 */
-  .comment-cell textarea{font-size:10px;height:44px;padding:2px 4px}
+  .comment-cell textarea{font-size:10px;height:36px;padding:2px 4px}
 }
 /* Print */
 @media print{.comment-cell textarea::placeholder{color:transparent!important}
