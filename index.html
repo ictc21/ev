@@ -141,21 +141,19 @@ body{font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;background:#f0
   .eval-table colgroup col:nth-child(2){width:116px!important}
   .eval-table colgroup col:nth-child(3){width:38px!important}
   .eval-table colgroup col:nth-child(4){width:0!important}
-  /* 관찰기록 셀/헤더 숨김 */
+  /* 관찰기록 셀·헤더 숨김 (▼ 버튼으로 접근 가능) */
   .eval-table .comment-cell{display:none}
   .eval-table thead th:nth-child(4){display:none}
-  /* 득점 폰트 */
-  .pts-cell{font-size:12px}
-  /* 행동지표: 좌측 flex 한 줄 표시 */
-  .item-name{font-size:11px;display:flex;align-items:center;gap:3px;overflow:hidden;text-align:left}
-  .item-text{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;line-height:1.4}
-  .item-name .key-star{flex-shrink:0}
+  /* 행동지표: 줄바꿈 허용, 폰트 작게 */
+  .item-name{font-size:11px;white-space:normal;word-break:keep-all;line-height:1.4}
+  /* 아코디언 상세 행: colspan 유지되도록 전체 너비 */
+  .detail-row td{padding:0 6px 6px 6px}
   /* 채점 버튼: 중앙 정렬 */
-  .eval-table tbody tr td:nth-child(2){text-align:center}
   .score-btns{justify-content:center}
-  /* 상/중/하 버튼 */
   .s-btn{padding:2px 3px;font-size:11px;border-width:1px;flex:none}
   .s-btn .s-pts{font-size:9px}
+  /* 득점 */
+  .pts-cell{font-size:12px}
 }
 @media(max-width:360px){
   .info-field input{font-size:10px;padding:3px 4px}
@@ -189,6 +187,20 @@ body{font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;background:#f0
 /* 힌트 버튼 */
 .btn-hint{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;background:#e0e7ff;border:1px solid #a5b4fc;border-radius:50%;color:#4338ca;font-size:11px;font-weight:bold;cursor:pointer;margin-left:5px;flex-shrink:0;vertical-align:middle;line-height:1}
 .btn-hint:hover{background:#c7d2fe;border-color:#6366f1}
+/* 아코디언 토글 버튼 */
+.btn-toggle{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;background:#e0e7ff;border:1px solid #a5b4fc;border-radius:50%;color:#4338ca;font-size:10px;font-weight:bold;cursor:pointer;margin-left:5px;flex-shrink:0;vertical-align:middle;line-height:1;transition:transform .2s,background .15s}
+.btn-toggle:hover{background:#c7d2fe;border-color:#6366f1}
+.btn-toggle.open{transform:rotate(180deg);background:#4338ca;color:white;border-color:#4338ca}
+/* 아코디언 관찰 기록 행 */
+.detail-row{display:none}
+.detail-row.open{display:table-row}
+/* readonly textarea 스타일 */
+.comment-cell textarea[readonly]{background:#fafafa;color:#9ca3af;cursor:pointer}
+.comment-cell textarea[readonly]:hover{background:#f3f4f6}
+/* 하 평정 행 빨간색 */
+.item-row.rating-하 td{background:#fef2f2 !important}
+.item-row.rating-하:hover td{background:#fee2e2 !important}
+.item-row.rating-하 .item-name{color:#991b1b}
 
 .btn-guide{background:#1e3a5f;color:white}
 /* 면접평가표 */
@@ -627,8 +639,9 @@ function buildForm(d) {
     cat.items.forEach(item => {
       html += `
       <tr class="item-row" id="${d.id}-row-${item.id}">
-        <td class="item-name ${item.key?'key-item':''} item-clickable" data-tabid="${d.id}" data-itemid="${item.id}" onclick="showItemDetail(this.dataset.tabid,this.dataset.itemid)">
-          <span class="item-text">${item.name}${item.key?'<span class="key-star">★ 주요</span>':''}</span><span class="btn-hint" style="pointer-events:none;flex-shrink:0" title="세부사항 보기">?</span>
+        <td class="item-name ${item.key?'key-item':''}">
+          ${item.name}${item.key?'<span class="key-star">★ 주요</span>':''}
+          <span class="btn-toggle" id="${d.id}-toggle-${item.id}" onclick="toggleDetail('${d.id}','${item.id}',this)" title="세부사항 보기">▼</span>
         </td>
         <td>
           <div class="score-btns">
@@ -645,7 +658,16 @@ function buildForm(d) {
         </td>
         <td class="pts-cell empty" id="${d.id}-pts-${item.id}">-</td>
         <td class="comment-cell">
-          <textarea id="${d.id}-cmt-${item.id}" style="overflow-y:auto;" placeholder="${item.key?'★ 하 평정 시 사유 기록':'하 평정 시 사유 기록'}"></textarea>
+          <textarea id="${d.id}-cmt-${item.id}"
+            placeholder="${item.key?'★ 하 평정 시 사유 기록':'하 평정 시 사유 기록'}"
+            readonly
+            onclick="this.removeAttribute('readonly')"
+            onblur="this.setAttribute('readonly','')"></textarea>
+        </td>
+      </tr>
+      <tr class="detail-row" id="${d.id}-detail-${item.id}">
+        <td colspan="4" style="padding:0 6px 6px 6px;background:#f0f7ff;border-bottom:2px solid #a5b4fc">
+          <div style="font-size:11px;color:#1e3a5f;line-height:1.75;padding:6px 4px;white-space:pre-wrap;word-break:keep-all">${(HINTS[item.id]||'').replace(/</g,'&lt;')}</div>
         </td>
       </tr>`;
     });
@@ -686,6 +708,13 @@ function buildForm(d) {
   return html;
 }
 
+function toggleDetail(tabId, itemId, btn) {
+  const detailRow = document.getElementById(`${tabId}-detail-${itemId}`);
+  if(!detailRow) return;
+  detailRow.classList.toggle('open');
+  btn.classList.toggle('open');
+}
+
 function setScore(tabId, itemId, rating, s0, s1, s2) {
   const scores = {상:s0, 중:s1, 하:s2};
   state[tabId][itemId] = state[tabId][itemId] || {};
@@ -700,6 +729,8 @@ function setScore(tabId, itemId, rating, s0, s1, s2) {
     ptsEl.textContent = '-'; ptsEl.classList.add('empty');
     const cmtEl = document.getElementById(`${tabId}-cmt-${itemId}`);
     cmtEl.classList.remove('show-warn');
+    // 행 빨간색 제거
+    document.getElementById(`${tabId}-row-${itemId}`).classList.remove('rating-하');
     updateSummary(tabId);
     return;
   }
@@ -723,6 +754,11 @@ function setScore(tabId, itemId, rating, s0, s1, s2) {
   const cmtEl = document.getElementById(`${tabId}-cmt-${itemId}`);
   if(rating === '하') cmtEl.classList.add('show-warn');
   else cmtEl.classList.remove('show-warn');
+
+  // 행 전체 빨간색 토글
+  const rowEl = document.getElementById(`${tabId}-row-${itemId}`);
+  if(rating === '하') rowEl.classList.add('rating-하');
+  else rowEl.classList.remove('rating-하');
 
   updateSummary(tabId);
 }
@@ -839,6 +875,14 @@ function confirmReset() {
       if(pts){ pts.textContent = '-'; pts.classList.add('empty'); }
       const cmt = document.getElementById(`${tabId}-cmt-${item.id}`);
       if(cmt){ cmt.value = ''; cmt.classList.remove('show-warn'); }
+      // 행 빨간색 제거
+      const rowEl = document.getElementById(`${tabId}-row-${item.id}`);
+      if(rowEl) rowEl.classList.remove('rating-하');
+      // 아코디언 닫기
+      const detailRow = document.getElementById(`${tabId}-detail-${item.id}`);
+      if(detailRow) detailRow.classList.remove('open');
+      const toggleBtn = document.getElementById(`${tabId}-toggle-${item.id}`);
+      if(toggleBtn) toggleBtn.classList.remove('open');
     });
   });
 
@@ -1597,57 +1641,6 @@ function closeGuide() {
   if(modal) modal.remove();
 }
 
-function showItemDetail(tabId, itemId) {
-  const dataItem = DATA[tabId].categories.flatMap(c=>c.items).find(i=>i.id===itemId);
-  if (!dataItem) return;
-
-  const guideData = GUIDE[tabId];
-  let guideItem = null, guideCatName = '', guideCatPts = 0;
-
-  DATA[tabId].categories.forEach((cat, ci) => {
-    cat.items.forEach((item, ii) => {
-      if (item.id === itemId && guideData && guideData.categories[ci]) {
-        guideCatName = cat.name;
-        guideCatPts = guideData.categories[ci].pts;
-        guideItem = guideData.categories[ci].items[ii];
-      }
-    });
-  });
-
-  let titleHTML = `📋 ${dataItem.name}`;
-  if (dataItem.key) titleHTML += ' <span style="background:#fef2f2;color:#991b1b;border:1px solid #fca5a5;border-radius:3px;padding:1px 5px;font-size:11px;font-weight:bold">★ 주요</span>';
-
-  let bodyHTML = `<div style="font-size:11px;color:#6b7280;margin-bottom:10px;padding:6px 10px;background:#f8fafc;border-radius:6px;border:1px solid #e2e8f0">`;
-  bodyHTML += `평가항목: <strong>${guideCatName}</strong> &nbsp;|&nbsp; 배점: <strong style="color:#1d4ed8">${dataItem.s[0]}(상) · ${dataItem.s[1]}(중) · ${dataItem.s[2]}(하)점</strong></div>`;
-
-  if (guideItem && guideItem.details && guideItem.details.length > 0) {
-    bodyHTML += `<div style="font-size:12px;font-weight:bold;color:#374151;margin-bottom:8px">세부사항 (주요내용)</div>`;
-    guideItem.details.forEach(d => {
-      if (Array.isArray(d)) {
-        bodyHTML += `<div style="color:#6b7280;padding-left:20px;font-size:12px;line-height:1.65;margin-bottom:3px">${d[0]}</div>`;
-      } else {
-        bodyHTML += `<div style="display:flex;gap:5px;font-size:13px;line-height:1.75;margin-bottom:4px;color:#1e3a5f"><span style="flex-shrink:0;color:#2563eb">□</span><span>${d}</span></div>`;
-      }
-    });
-  } else {
-    const hint = HINTS[itemId];
-    if (hint) {
-      hint.split('\n').forEach(line => {
-        if (!line.trim()) return;
-        if (line.startsWith('□')) {
-          bodyHTML += `<div style="display:flex;gap:5px;font-size:13px;line-height:1.75;margin-bottom:4px;color:#1e3a5f"><span style="flex-shrink:0;color:#2563eb">□</span><span>${line.slice(1).trim()}</span></div>`;
-        } else {
-          bodyHTML += `<div style="color:#6b7280;padding-left:20px;font-size:12px;line-height:1.65;margin-bottom:3px">${line.trim()}</div>`;
-        }
-      });
-    }
-  }
-
-  document.getElementById('hintModalTitle').innerHTML = titleHTML;
-  document.getElementById('hintModalBody').innerHTML = bodyHTML;
-  document.getElementById('hintModal').style.display = 'flex';
-}
-
 function buildGuideTable(data) {
   let html = `<table class="guide-table"><thead><tr>
     <th style="width:10%">평가항목</th>
@@ -1686,15 +1679,5 @@ function buildGuideTable(data) {
 
 
 </script>
-<!-- 힌트 모달 -->
-<div id="hintModal" class="hint-modal-overlay" style="display:none" onclick="if(event.target===this)closeHint()">
-  <div class="hint-modal-box">
-    <div class="hint-modal-title" id="hintModalTitle"></div>
-    <div class="hint-modal-body" id="hintModalBody"></div>
-    <div class="hint-modal-footer">
-      <button class="hint-modal-close" onclick="closeHint()">닫기</button>
-    </div>
-  </div>
-</div>
 </body>
 </html>
